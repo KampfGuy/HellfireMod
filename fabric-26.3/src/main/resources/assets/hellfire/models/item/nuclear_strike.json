@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "hellfire:item/strike_radio"
+    "layer0": "hellfire:item/nuclear_strike"
   }
 }

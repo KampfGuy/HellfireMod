@@ -1,4 +1,3 @@
-
 package com.kampfkaiser.hellfire.registry;
 
 import com.kampfkaiser.hellfire.HellfireMod;
@@ -18,12 +17,10 @@ public final class ModTabs {
         ResourceKey<CreativeModeTab> key = ResourceKey.create(Registries.CREATIVE_MODE_TAB, HellfireMod.id("hellfire"));
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, key, FabricCreativeModeTab.builder()
                 .title(Component.translatable("itemGroup.hellfire"))
-                .icon(() -> new ItemStack(ModItems.STRIKE_RADIO))
+                .icon(() -> new ItemStack(ModItems.MISSILE_STRIKE))
                 .displayItems((params, output) -> {
-                    output.accept(ModItems.STRIKE_RADIO);
-                    output.accept(ModItems.TACTICAL_MISSILE);
-                    output.accept(ModItems.NUCLEAR_CHARGE);
-                    output.accept(ModItems.FLARE);
+                    output.accept(ModItems.MISSILE_STRIKE);
+                    output.accept(ModItems.NUCLEAR_STRIKE);
                 })
                 .build());
     }

@@ -9,16 +9,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 
-public class NuclearChargeItem extends Item {
-    public NuclearChargeItem(Properties properties) { super(properties); }
+public class NuclearStrikeItem extends Item {
+    public NuclearStrikeItem(Properties properties) { super(properties); }
 
     @Override
     public InteractionResult useOn(UseOnContext context) {
-        return Actions.placeCharge(context);
+        return Actions.nuclearStrike(context);
     }
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(Component.translatable("item.hellfire.nuclear_charge.tooltip").withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("item.hellfire.nuclear_strike.tooltip").withStyle(ChatFormatting.GRAY));
     }
 }

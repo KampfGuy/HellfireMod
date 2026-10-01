@@ -1,4 +1,3 @@
-
 package com.kampfkaiser.hellfire.item;
 
 import java.util.List;
@@ -12,14 +11,14 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 
-public class StrikeRadioItem extends Item {
-    public StrikeRadioItem(Properties properties) { super(properties); }
+public class MissileStrikeItem extends Item {
+    public MissileStrikeItem(Properties properties) { super(properties); }
 
     @Override
-    public InteractionResult useOn(UseOnContext context) { return Actions.strike(context); }
+    public InteractionResult useOn(UseOnContext context) { return Actions.missileStrike(context); }
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-        tooltip.add(Component.translatable("item.hellfire.strike_radio.tooltip").withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("item.hellfire.missile_strike.tooltip").withStyle(ChatFormatting.GRAY));
     }
 }

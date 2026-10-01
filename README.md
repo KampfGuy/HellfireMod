@@ -1,19 +1,17 @@
 # Hellfire
 
-A Minecraft mod that adds fictional military gear. Every blast is a normal Minecraft explosion (the same system TNT uses), plus vanilla particles and sounds. Nothing here describes a real weapon, a real yield, or a real procedure.
+A Minecraft mod that adds two fictional strike items. Every blast is a normal Minecraft explosion (the same system TNT uses), plus vanilla particles and sounds. Nothing here describes a real weapon, a real yield, or a real procedure.
 
-The plane, bomb, missile, charge, and flare models are original box models written for this mod. They were not downloaded and they are not copied from Mojang.
+The missile, marker, and charge models are original box models written for this mod. They were not downloaded and they are not copied from Mojang. The item icons are the red and yellow sprites supplied for this version.
 
 ## Items
 
-Creative tab: **Hellfire**.
+Creative tab: **Hellfire**. Only these two items are in it. Neither item is consumed. Each use has a short cooldown.
 
 | Item | How to use |
 | --- | --- |
-| Strike Radio | Right-click a block to call a plane. It flies in from off-screen, drops several bombs along a line, and leaves. Sneak-use calls the strike on the nearest flare instead (within 64 blocks). The radio is not consumed. |
-| Flare | Right-click to place a glowing marker with a tall particle beam so you can see where a strike will land. |
-| Tactical Missile | Right-click to launch a missile at the block you are looking at. It flies there and creates one large Minecraft explosion. Sneak-use toggles an incendiary flag stored on that stack (`HellfireIgnite`). Fires are off unless you toggle the stack or turn on `missileStartsFires` in the config. |
-| Nuclear Charge | Right-click a block face to place and arm it. After about 10 seconds (smoke and flame warning) it detonates: several Minecraft explosions, a stylized particle mushroom cloud, a knockback shockwave, a ring of fire, and a crater of air where stone and dirt were. Bedrock is never removed. The crater is about 30–40 blocks across by default. The tooltip is the warning: it devastates a large area. Treat it as a creative / testing item on a world you care about. |
+| Missile Strike (red) | Right-click a block. A missile entity flies in from above and hits that block with one large Minecraft explosion. A red particle beam marks the spot while it is incoming. |
+| Nuclear Strike (yellow) | Right-click a block to arm a strike on that spot. You do not place a separate block. For about 10 seconds there is smoke, flame, and a yellow particle beam. Then the existing nuclear blast runs: several Minecraft explosions, a stylized particle mushroom cloud, a knockback shockwave, a ring of fire, and a crater of air where stone and dirt were. Bedrock is never removed. The crater is about 30–40 blocks across by default. The tooltip is the warning: it devastates a large area. Treat it as a creative / testing item on a world you care about. |
 
 ## Config
 
@@ -22,13 +20,15 @@ Values are in-game block counts and Minecraft explosion power. They are capped (
 - NeoForge and Forge: `config/hellfire-common.toml` after you launch the game once.
 - Fabric: `config/hellfire.properties` (written on first launch).
 
+`fuseTicks` is the nuclear warning time (default 200 ticks, about 10 seconds). `missilePower` is the single missile explosion. `nuclearPower`, `nuclearRadius`, and `craterRadius` size the nuclear blast.
+
 ## Install
 
-Built jars:
+Built jars (1.1.0):
 
-- `hellfire-neoforge-1.21.1-1.0.0.jar` — Minecraft **1.21.1**, NeoForge **21.1.250** or newer on the 21.1 line. Put the jar in the `mods` folder of a NeoForge 1.21.1 instance.
-- `hellfire-forge-1.20.1-1.0.0.jar` — Minecraft **1.20.1**, Forge **47.4.0** or newer on the 47.x line. Put the jar in the `mods` folder.
-- `hellfire-fabric-26.3-1.0.0.jar` — Minecraft **26.3**, Fabric Loader **0.19.5**, and Fabric API **0.161.0+26.3** (or a newer 26.3 build). Install the loader, then put this jar and Fabric API in `mods`.
+- `hellfire-neoforge-1.21.1-1.1.0.jar` — Minecraft **1.21.1**, NeoForge **21.1.250** or newer on the 21.1 line. Put the jar in the `mods` folder of a NeoForge 1.21.1 instance.
+- `hellfire-forge-1.20.1-1.1.0.jar` — Minecraft **1.20.1**, Forge **47.4.0** or newer on the 47.x line. Put the jar in the `mods` folder.
+- `hellfire-fabric-26.3-1.1.0.jar` — Minecraft **26.3**, Fabric Loader **0.19.5**, and Fabric API **0.161.0+26.3** (or a newer 26.3 build). Install the loader, then put this jar and Fabric API in `mods`.
 
 ## Build
 

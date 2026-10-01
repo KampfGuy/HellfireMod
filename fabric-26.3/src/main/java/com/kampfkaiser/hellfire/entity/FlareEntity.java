@@ -1,44 +1,34 @@
 package com.kampfkaiser.hellfire.entity;
 
 import com.kampfkaiser.hellfire.registry.ModEntities;
+import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 
 public class FlareEntity extends DurableEntity {
-    private int life = 600;
+    public static final int RED = 0;
+    public static final int YELLOW = 1;
+
+    private int life = 200;
+    private int color = RED;
 
     public FlareEntity(EntityType<? extends FlareEntity> type, Level level) {
         super(type, level);
     }
 
-    public static void spawn(Level level, Vec3 pos, int life) {
+    public static void spawn(Level level, Vec3 pos, int life, int color) {
         if (Env.client(level)) return;
         FlareEntity flare = new FlareEntity(ModEntities.flareType(), level);
         flare.setPos(pos.x, pos.y, pos.z);
         flare.markGhost();
         flare.life = life;
-        flare.setGlowingTag(true);
+        flare.color = color;
         level.addFreshEntity(flare);
-    }
-
-    public static FlareEntity nearest(Level level, Vec3 pos, double radius) {
-        FlareEntity best = null;
-        double bestDistance = radius * radius;
-        AABB box = new AABB(pos.x - radius, pos.y - radius, pos.z - radius, pos.x + radius, pos.y + radius, pos.z + radius);
-        for (FlareEntity flare : level.getEntities(net.minecraft.world.level.entity.EntityTypeTest.forClass(FlareEntity.class), box, candidate -> true)) {
-            double distance = flare.position().distanceToSqr(pos);
-            if (distance < bestDistance) {
-                bestDistance = distance;
-                best = flare;
-            }
-        }
-        return best;
     }
 
     @Override
@@ -51,20 +41,24 @@ public class FlareEntity extends DurableEntity {
             return;
         }
         if (tickCount % 2 == 0 && world() instanceof ServerLevel server) {
-            for (int i = 0; i < 30; i += 2) {
-                server.sendParticles(ParticleTypes.END_ROD, getX(), getY() + i, getZ(), 1, 0.02, 0.15, 0.02, 0.0);
+            DustParticleOptions dust = new DustParticleOptions(this.color == YELLOW ? 0xFFDD22 : 0xFF2218, 1.35F);
+            for (int i = 0; i < 28; i += 2) {
+                server.sendParticles(dust, getX(), getY() + i, getZ(), 2, 0.04, 0.05, 0.04, 0.0);
             }
-            server.sendParticles(ParticleTypes.FLAME, getX(), getY() + 0.4, getZ(), 2, 0.08, 0.04, 0.08, 0.01);
+            server.sendParticles(this.color == YELLOW ? ParticleTypes.FLAME : ParticleTypes.LAVA,
+                    getX(), getY() + 0.3, getZ(), 1, 0.05, 0.02, 0.05, 0.0);
         }
     }
 
     @Override
     protected void readExtra(ValueInput tag) {
-        this.life = Nbt.getInt(tag, "Life", 600);
+        this.life = Nbt.getInt(tag, "Life", 200);
+        this.color = Nbt.getInt(tag, "Color", RED);
     }
 
     @Override
     protected void writeExtra(ValueOutput tag) {
         Nbt.putInt(tag, "Life", this.life);
+        Nbt.putInt(tag, "Color", this.color);
     }
 }

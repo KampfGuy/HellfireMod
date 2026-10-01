@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "hellfire:item/tactical_missile"
+    "layer0": "hellfire:item/missile_strike"
   }
 }
