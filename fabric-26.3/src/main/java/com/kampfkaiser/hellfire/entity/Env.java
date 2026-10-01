@@ -44,4 +44,29 @@ public final class Env {
         };
         level.playSound(null, x, y, z, event, SoundSource.BLOCKS, volume, pitch);
     }
+
+    public static float forward(net.minecraft.world.entity.player.Player player) {
+        if (player instanceof net.minecraft.server.level.ServerPlayer server) {
+            var input = server.getLastClientInput();
+            return (input.forward() ? 1.0F : 0.0F) - (input.backward() ? 1.0F : 0.0F);
+        }
+        return player.zza;
+    }
+
+    public static float strafe(net.minecraft.world.entity.player.Player player) {
+        if (player instanceof net.minecraft.server.level.ServerPlayer server) {
+            var input = server.getLastClientInput();
+            return (input.left() ? 1.0F : 0.0F) - (input.right() ? 1.0F : 0.0F);
+        }
+        return player.xxa;
+    }
+
+    public static void harm(net.minecraft.server.level.ServerLevel level, net.minecraft.world.entity.LivingEntity entity, float amount) {
+        entity.hurtServer(level, level.damageSources().wither(), amount);
+    }
+
+    public static void cushion(net.minecraft.world.entity.player.Player player) {
+        player.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.SLOW_FALLING, 260));
+    }
+
 }

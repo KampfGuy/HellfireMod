@@ -43,4 +43,16 @@ public final class Env {
         };
         level.playSound(null, x, y, z, event, SoundSource.BLOCKS, volume, pitch);
     }
+
+    public static float forward(net.minecraft.world.entity.player.Player player) { return player.zza; }
+    public static float strafe(net.minecraft.world.entity.player.Player player) { return player.xxa; }
+
+    public static void harm(net.minecraft.server.level.ServerLevel level, net.minecraft.world.entity.LivingEntity entity, float amount) {
+        entity.hurt(level.damageSources().wither(), amount);
+    }
+
+    public static void cushion(net.minecraft.world.entity.player.Player player) {
+        player.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.SLOW_FALLING, 260));
+    }
+
 }

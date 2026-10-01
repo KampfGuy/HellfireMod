@@ -14,6 +14,7 @@ public class HellfireClient implements ClientModInitializer {
         ModelLayerRegistry.registerModelLayer(ModModelLayers.MISSILE, MissileModel::createBodyLayer);
         ModelLayerRegistry.registerModelLayer(ModModelLayers.CHARGE, ChargeModel::createBodyLayer);
         ModelLayerRegistry.registerModelLayer(ModModelLayers.FLARE, FlareModel::createBodyLayer);
+        ModelLayerRegistry.registerModelLayer(ModModelLayers.SPRITE, SpriteModel::createBodyLayer);
 
         EntityRendererRegistry.register(ModEntities.PLANE, ctx -> new OrdnanceRenderer<>(ctx, ModModelLayers.PLANE, PlaneModel::new, ModModelLayers.tex("textures/entity/plane.png"), 1.65F));
         EntityRendererRegistry.register(ModEntities.BOMB, ctx -> new OrdnanceRenderer<>(ctx, ModModelLayers.BOMB, BombModel::new, ModModelLayers.tex("textures/entity/bomb.png"), 1.15F));
@@ -21,5 +22,9 @@ public class HellfireClient implements ClientModInitializer {
         EntityRendererRegistry.register(ModEntities.CHARGE, ctx -> new OrdnanceRenderer<>(ctx, ModModelLayers.CHARGE, ChargeModel::new, ModModelLayers.tex("textures/entity/charge.png"), 1.2F));
         EntityRendererRegistry.register(ModEntities.FLARE, ctx -> new OrdnanceRenderer<>(ctx, ModModelLayers.FLARE, FlareModel::new, ModModelLayers.tex("textures/entity/flare.png"), 1.35F));
         EntityRendererRegistry.register(ModEntities.CLOUD, CloudRenderer::new);
+        EntityRendererRegistry.register(ModEntities.PILOT, ctx -> new OrdnanceRenderer<>(ctx, ModModelLayers.PLANE, PlaneModel::new, ModModelLayers.tex("textures/entity/plane.png"), 1.65F));
+        EntityRendererRegistry.register(ModEntities.THROWN, ThrownFlareRenderer::new);
+        EntityRendererRegistry.register(ModEntities.NAPALM, CloudRenderer::new);
+        EntityRendererRegistry.register(ModEntities.RADIATION, CloudRenderer::new);
     }
 }

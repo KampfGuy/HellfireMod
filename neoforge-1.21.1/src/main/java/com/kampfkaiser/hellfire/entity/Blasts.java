@@ -35,7 +35,8 @@ public final class Blasts {
         if (!(level instanceof ServerLevel server)) return;
         int radius = HellfireConfig.nuclearRadius();
         float power = HellfireConfig.explosionPower();
-        int[][] offsets = {{0, 0}, {7, 0}, {-7, 0}, {0, 7}, {0, -7}};
+        int gap = Math.max(6, radius / 3);
+        int[][] offsets = {{0, 0}, {gap, 0}, {-gap, 0}, {0, gap}, {0, -gap}, {gap, gap}, {-gap, -gap}};
         for (int[] offset : offsets) {
             Env.boom(server, pos.x + offset[0], pos.y + 0.5, pos.z + offset[1], power, false);
         }
@@ -45,6 +46,7 @@ public final class Blasts {
         shock(server, pos, radius);
         fireRing(server, center, radius);
         MushroomCloudEntity.spawn(server, pos, radius);
+        RadiationZoneEntity.spawn(server, pos, Math.max(10, (int) (radius * 0.75)), 1200);
     }
 
     private static void carve(ServerLevel level, BlockPos center, int radius) {

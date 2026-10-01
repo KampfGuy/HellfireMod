@@ -7,13 +7,20 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class StrikePlaneEntity extends DurableEntity {
+    public static final int BOMBS = 0;
+    public static final int NAPALM = 1;
+    public static final int NUKE = 2;
+
     private double ax;
     private double ay;
     private double az;
     private double dx;
     private double dz;
-    private double nextDrop = -16.0;
+    private double nextDrop = -14.0;
+    private double spacing = 7.0;
+    private double speed = 1.35;
     private int dropsLeft = 5;
+    private int mode = BOMBS;
     private boolean ready;
 
     public StrikePlaneEntity(EntityType<? extends StrikePlaneEntity> type, Level level) {
@@ -21,21 +28,30 @@ public class StrikePlaneEntity extends DurableEntity {
     }
 
     public static void spawn(Level level, Vec3 target, Vec3 look) {
+        spawn(level, target, look, BOMBS);
+    }
+
+    public static void spawn(Level level, Vec3 target, Vec3 look, int mode) {
         if (Env.client(level)) return;
         Vec3 dir = new Vec3(look.x, 0.0, look.z);
         if (dir.lengthSqr() < 1.0E-4) dir = new Vec3(0.0, 0.0, 1.0);
         dir = dir.normalize();
-        Vec3 start = target.subtract(dir.scale(72.0)).add(0.0, 26.0, 0.0);
+        double distance = mode == NUKE ? 96.0 : 70.0;
+        double altitude = mode == NUKE ? 34.0 : 24.0;
+        Vec3 start = target.subtract(dir.scale(distance)).add(0.0, altitude, 0.0);
         StrikePlaneEntity plane = new StrikePlaneEntity(ModEntities.planeType(), level);
         plane.setPos(start.x, start.y, start.z);
         plane.markGhost();
         plane.ax = target.x;
-        plane.ay = target.y;
+        plane.ay = target.y + altitude;
         plane.az = target.z;
         plane.dx = dir.x;
         plane.dz = dir.z;
-        plane.nextDrop = -16.0;
-        plane.dropsLeft = 5;
+        plane.mode = mode;
+        plane.speed = mode == NUKE ? 0.58 : 1.35;
+        plane.dropsLeft = mode == NUKE ? 1 : mode == NAPALM ? 7 : 5;
+        plane.spacing = mode == NUKE ? 1.0 : mode == NAPALM ? 4.5 : 7.0;
+        plane.nextDrop = mode == NUKE ? 0.0 : -plane.spacing * (plane.dropsLeft / 2.0);
         plane.ready = true;
         plane.snapYaw((float) (Math.atan2(dir.z, dir.x) * (180.0 / Math.PI)) - 90.0F);
         level.addFreshEntity(plane);
@@ -49,17 +65,20 @@ public class StrikePlaneEntity extends DurableEntity {
             discard();
             return;
         }
-        double step = 1.55;
-        setPos(getX() + this.dx * step, getY(), getZ() + this.dz * step);
+        setPos(getX() + this.dx * this.speed, this.ay, getZ() + this.dz * this.speed);
         Vec3 dir = new Vec3(this.dx, 0.0, this.dz);
-        double along = position().subtract(new Vec3(this.ax, this.ay, this.az)).dot(dir);
+        double along = new Vec3(getX() - this.ax, 0.0, getZ() - this.az).dot(dir);
         snapYaw((float) (Math.atan2(dir.z, dir.x) * (180.0 / Math.PI)) - 90.0F);
         while (this.dropsLeft > 0 && along >= this.nextDrop) {
-            BombEntity.spawn(world(), position().add(0.0, -1.4, 0.0), dir.scale(0.25).add(0.0, -0.12, 0.0));
+            Vec3 drop = position().add(0.0, -1.4, 0.0);
+            Vec3 velocity = dir.scale(0.22).add(0.0, -0.12, 0.0);
+            if (this.mode == NAPALM) NapalmFieldEntity.spawn(world(), drop, 600);
+            else if (this.mode == NUKE) BombEntity.spawnNuclear(world(), drop, velocity);
+            else BombEntity.spawn(world(), drop, velocity);
             this.dropsLeft--;
-            this.nextDrop += 8.0;
+            this.nextDrop += this.spacing;
         }
-        if (along > 64.0 || tickCount > 400) discard();
+        if (along > 72.0 || tickCount > 500) discard();
     }
 
     @Override
@@ -75,8 +94,11 @@ public class StrikePlaneEntity extends DurableEntity {
         this.az = Nbt.getDouble(tag, "AZ", 0);
         this.dx = Nbt.getDouble(tag, "DX", 0);
         this.dz = Nbt.getDouble(tag, "DZ", 1);
-        this.nextDrop = Nbt.getDouble(tag, "NextDrop", -16);
+        this.nextDrop = Nbt.getDouble(tag, "NextDrop", -14);
+        this.spacing = Nbt.getDouble(tag, "Spacing", 7);
+        this.speed = Nbt.getDouble(tag, "Speed", 1.35);
         this.dropsLeft = Nbt.getInt(tag, "Drops", 5);
+        this.mode = Nbt.getInt(tag, "Mode", BOMBS);
     }
 
     @Override
@@ -88,6 +110,9 @@ public class StrikePlaneEntity extends DurableEntity {
         Nbt.putDouble(tag, "DX", this.dx);
         Nbt.putDouble(tag, "DZ", this.dz);
         Nbt.putDouble(tag, "NextDrop", this.nextDrop);
+        Nbt.putDouble(tag, "Spacing", this.spacing);
+        Nbt.putDouble(tag, "Speed", this.speed);
         Nbt.putInt(tag, "Drops", this.dropsLeft);
+        Nbt.putInt(tag, "Mode", this.mode);
     }
 }

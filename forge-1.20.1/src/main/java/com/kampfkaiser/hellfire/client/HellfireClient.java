@@ -4,7 +4,9 @@ package com.kampfkaiser.hellfire.client;
 import com.kampfkaiser.hellfire.HellfireMod;
 import com.kampfkaiser.hellfire.registry.ModEntities;
 import net.minecraftforge.api.distmarker.Dist;
+import com.kampfkaiser.hellfire.registry.ModItems;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -19,6 +21,7 @@ public class HellfireClient {
         event.registerLayerDefinition(ModModelLayers.MISSILE, MissileModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.CHARGE, ChargeModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.FLARE, FlareModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.SPRITE, SpriteModel::createBodyLayer);
     }
 
     @SubscribeEvent
@@ -29,5 +32,19 @@ public class HellfireClient {
         event.registerEntityRenderer(ModEntities.CHARGE.get(), ctx -> new OrdnanceRenderer<>(ctx, ModModelLayers.CHARGE, ChargeModel::new, ModModelLayers.tex("textures/entity/charge.png"), 1.2F));
         event.registerEntityRenderer(ModEntities.FLARE.get(), ctx -> new OrdnanceRenderer<>(ctx, ModModelLayers.FLARE, FlareModel::new, ModModelLayers.tex("textures/entity/flare.png"), 1.35F));
         event.registerEntityRenderer(ModEntities.CLOUD.get(), ctx -> new CloudRenderer(ctx));
+        event.registerEntityRenderer(ModEntities.PILOT.get(), ctx -> new OrdnanceRenderer<>(ctx, ModModelLayers.PLANE, PlaneModel::new, ModModelLayers.tex("textures/entity/plane.png"), 1.65F));
+        event.registerEntityRenderer(ModEntities.THROWN.get(), ThrownFlareRenderer::new);
+        event.registerEntityRenderer(ModEntities.NAPALM.get(), ctx -> new CloudRenderer(ctx));
+        event.registerEntityRenderer(ModEntities.RADIATION.get(), ctx -> new CloudRenderer(ctx));
+    }
+
+    @SubscribeEvent
+    public static void setup(FMLClientSetupEvent event) {
+        event.enqueueWork(() -> {
+            PullAnim.register(ModItems.MISSILE_STRIKE.get());
+            PullAnim.register(ModItems.NUCLEAR_STRIKE.get());
+            PullAnim.register(ModItems.NAPALM_STRIKE.get());
+            PullAnim.register(ModItems.BOMBING_RUN.get());
+        });
     }
 }

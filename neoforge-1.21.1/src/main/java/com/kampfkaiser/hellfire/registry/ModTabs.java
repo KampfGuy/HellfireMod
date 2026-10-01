@@ -13,10 +13,13 @@ public final class ModTabs {
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> HELLFIRE = TABS.register("hellfire", () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup.hellfire"))
-            .icon(() -> new ItemStack(ModItems.MISSILE_STRIKE.get()))
+            .icon(() -> new ItemStack(ModItems.RADIO.get()))
             .displayItems((params, output) -> {
+                output.accept(ModItems.RADIO.get());
                 output.accept(ModItems.MISSILE_STRIKE.get());
                 output.accept(ModItems.NUCLEAR_STRIKE.get());
+                output.accept(ModItems.NAPALM_STRIKE.get());
+                output.accept(ModItems.BOMBING_RUN.get());
             })
             .build());
 

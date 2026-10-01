@@ -13,6 +13,8 @@ import org.joml.Vector3f;
 public class FlareEntity extends DurableEntity {
     public static final int RED = 0;
     public static final int YELLOW = 1;
+    public static final int ORANGE = 2;
+    public static final int BLUE = 3;
 
     private int life = 200;
     private int color = RED;
@@ -41,9 +43,13 @@ public class FlareEntity extends DurableEntity {
             return;
         }
         if (tickCount % 2 == 0 && world() instanceof ServerLevel server) {
-            DustParticleOptions dust = this.color == YELLOW
-                    ? new DustParticleOptions(new Vector3f(1.0F, 0.86F, 0.05F), 1.35F)
-                    : new DustParticleOptions(new Vector3f(1.0F, 0.08F, 0.05F), 1.35F);
+            Vector3f rgb = switch (this.color) {
+                case YELLOW -> new Vector3f(1.0F, 0.86F, 0.05F);
+                case ORANGE -> new Vector3f(1.0F, 0.42F, 0.05F);
+                case BLUE -> new Vector3f(0.15F, 0.55F, 1.0F);
+                default -> new Vector3f(1.0F, 0.08F, 0.05F);
+            };
+            DustParticleOptions dust = new DustParticleOptions(rgb, 1.35F);
             for (int i = 0; i < 28; i += 2) {
                 server.sendParticles(dust, getX(), getY() + i, getZ(), 2, 0.04, 0.05, 0.04, 0.0);
             }

@@ -13,6 +13,8 @@ import net.minecraft.world.phys.Vec3;
 public class FlareEntity extends DurableEntity {
     public static final int RED = 0;
     public static final int YELLOW = 1;
+    public static final int ORANGE = 2;
+    public static final int BLUE = 3;
 
     private int life = 200;
     private int color = RED;
@@ -41,7 +43,13 @@ public class FlareEntity extends DurableEntity {
             return;
         }
         if (tickCount % 2 == 0 && world() instanceof ServerLevel server) {
-            DustParticleOptions dust = new DustParticleOptions(this.color == YELLOW ? 0xFFDD22 : 0xFF2218, 1.35F);
+            int rgb = switch (this.color) {
+                case YELLOW -> 0xFFDD22;
+                case ORANGE -> 0xFF7A12;
+                case BLUE -> 0x2E90FF;
+                default -> 0xFF2218;
+            };
+            DustParticleOptions dust = new DustParticleOptions(rgb, 1.35F);
             for (int i = 0; i < 28; i += 2) {
                 server.sendParticles(dust, getX(), getY() + i, getZ(), 2, 0.04, 0.05, 0.04, 0.0);
             }

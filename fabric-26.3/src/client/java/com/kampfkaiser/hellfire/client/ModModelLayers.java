@@ -11,6 +11,7 @@ public final class ModModelLayers {
     public static final ModelLayerLocation MISSILE = layer("missile");
     public static final ModelLayerLocation CHARGE = layer("nuclear_charge");
     public static final ModelLayerLocation FLARE = layer("flare");
+    public static final ModelLayerLocation SPRITE = layer("thrown_flare");
 
     private ModModelLayers() {}
 

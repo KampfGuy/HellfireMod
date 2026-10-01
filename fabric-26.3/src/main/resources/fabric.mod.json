@@ -8,6 +8,7 @@
   "authors": ["Kampf Kaiser"],
   "license": "MIT",
   "environment": "*",
+  "mixins": ["hellfire.mixins.json"],
   "entrypoints": {
     "main": ["com.kampfkaiser.hellfire.HellfireMod"],
     "client": ["com.kampfkaiser.hellfire.client.HellfireClient"]

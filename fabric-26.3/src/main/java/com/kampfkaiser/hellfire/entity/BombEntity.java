@@ -10,16 +10,26 @@ import net.minecraft.world.phys.Vec3;
 
 public class BombEntity extends TrackedEntity {
     private int age;
+    private boolean nuclear;
 
     public BombEntity(EntityType<? extends BombEntity> type, Level level) {
         super(type, level);
     }
 
     public static void spawn(Level level, Vec3 pos, Vec3 velocity) {
+        spawn(level, pos, velocity, false);
+    }
+
+    public static void spawnNuclear(Level level, Vec3 pos, Vec3 velocity) {
+        spawn(level, pos, velocity, true);
+    }
+
+    private static void spawn(Level level, Vec3 pos, Vec3 velocity, boolean nuclear) {
         if (Env.client(level)) return;
         BombEntity bomb = new BombEntity(ModEntities.bombType(), level);
         bomb.setPos(pos.x, pos.y, pos.z);
         bomb.setDeltaMovement(velocity);
+        bomb.nuclear = nuclear;
         level.addFreshEntity(bomb);
     }
 
@@ -36,7 +46,7 @@ public class BombEntity extends TrackedEntity {
         move(MoverType.SELF, getDeltaMovement());
         faceMotion();
         if (this.age > 4 && (grounded() || this.age > 200)) {
-            Blasts.bomb(world(), position());
+            if (this.nuclear) Blasts.nuclear(world(), position()); else Blasts.bomb(world(), position());
             discard();
         }
     }
@@ -44,10 +54,12 @@ public class BombEntity extends TrackedEntity {
     @Override
     protected void readExtra(ValueInput tag) {
         this.age = Nbt.getInt(tag, "Age", 0);
+        this.nuclear = Nbt.getBool(tag, "Nuclear", false);
     }
 
     @Override
     protected void writeExtra(ValueOutput tag) {
         Nbt.putInt(tag, "Age", this.age);
+        Nbt.putBool(tag, "Nuclear", this.nuclear);
     }
 }

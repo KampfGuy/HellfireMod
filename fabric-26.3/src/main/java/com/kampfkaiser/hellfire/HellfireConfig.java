@@ -10,8 +10,8 @@ import java.util.Properties;
 import net.fabricmc.loader.api.FabricLoader;
 
 public final class HellfireConfig {
-    public static int nuclearRadius = 18;
-    public static double explosionPower = 3.2;
+    public static int nuclearRadius = 27;
+    public static double explosionPower = 4.8;
     public static double missilePower = 5.5;
     public static double bombPower = 3.0;
     public static boolean missileStartsFires = false;
@@ -28,8 +28,8 @@ public final class HellfireConfig {
             } catch (IOException ignored) {
             }
         } else {
-            properties.setProperty("nuclearRadius", "18");
-            properties.setProperty("explosionPower", "3.2");
+            properties.setProperty("nuclearRadius", "27");
+            properties.setProperty("explosionPower", "4.8");
             properties.setProperty("missilePower", "5.5");
             properties.setProperty("bombPower", "3.0");
             properties.setProperty("missileStartsFires", "false");
@@ -42,8 +42,8 @@ public final class HellfireConfig {
             } catch (IOException ignored) {
             }
         }
-        nuclearRadius = clamp(parseInt(properties.getProperty("nuclearRadius"), 18), 8, 22);
-        explosionPower = clampD(parseDouble(properties.getProperty("explosionPower"), 3.2), 1.0, 6.0);
+        nuclearRadius = clamp(parseInt(properties.getProperty("nuclearRadius"), 27), 8, 30);
+        explosionPower = clampD(parseDouble(properties.getProperty("explosionPower"), 4.8), 1.0, 6.0);
         missilePower = clampD(parseDouble(properties.getProperty("missilePower"), 5.5), 1.0, 6.0);
         bombPower = clampD(parseDouble(properties.getProperty("bombPower"), 3.0), 1.0, 5.0);
         missileStartsFires = Boolean.parseBoolean(properties.getProperty("missileStartsFires", "false"));

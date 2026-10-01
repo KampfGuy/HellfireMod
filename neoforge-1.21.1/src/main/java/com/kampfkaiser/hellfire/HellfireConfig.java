@@ -8,10 +8,10 @@ public final class HellfireConfig {
 
     public static final ModConfigSpec.IntValue NUCLEAR_RADIUS = BUILDER
             .comment("In-game crater radius in blocks (about twice this across). Capped so a survival world stays playable. Not a real-world measurement.")
-            .defineInRange("nuclearRadius", 18, 8, 22);
+            .defineInRange("nuclearRadius", 27, 8, 30);
     public static final ModConfigSpec.DoubleValue EXPLOSION_POWER = BUILDER
             .comment("Minecraft explosion power of each staged blast inside the crater. Capped.")
-            .defineInRange("explosionPower", 3.2, 1.0, 6.0);
+            .defineInRange("explosionPower", 4.8, 1.0, 6.0);
     public static final ModConfigSpec.DoubleValue MISSILE_POWER = BUILDER
             .defineInRange("missilePower", 5.5, 1.0, 6.0);
     public static final ModConfigSpec.DoubleValue BOMB_POWER = BUILDER
@@ -26,8 +26,8 @@ public final class HellfireConfig {
 
     private HellfireConfig() {}
 
-    public static int nuclearRadius() { return clamp(read(NUCLEAR_RADIUS, 18), 8, 22); }
-    public static float explosionPower() { return (float) clampD(read(EXPLOSION_POWER, 3.2), 1.0, 6.0); }
+    public static int nuclearRadius() { return clamp(read(NUCLEAR_RADIUS, 27), 8, 30); }
+    public static float explosionPower() { return (float) clampD(read(EXPLOSION_POWER, 4.8), 1.0, 6.0); }
     public static float missilePower() { return (float) clampD(read(MISSILE_POWER, 5.5), 1.0, 6.0); }
     public static float bombPower() { return (float) clampD(read(BOMB_POWER, 3.0), 1.0, 5.0); }
     public static boolean missileStartsFires() { return read(MISSILE_STARTS_FIRES, false); }

@@ -65,4 +65,12 @@ public final class Meshes {
         root.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 18).addBox(-1.5F, -16.0F, -1.5F, 3.0F, 4.0F, 3.0F), PartPose.offset(0.0F, 0.0F, 0.0F));
         return LayerDefinition.create(mesh, 64, 64);
     }
+
+    public static LayerDefinition sprite() {
+        MeshDefinition mesh = new MeshDefinition();
+        PartDefinition root = mesh.getRoot();
+        root.addOrReplaceChild("card", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -8.0F, -0.5F, 8.0F, 14.0F, 1.0F), PartPose.offset(0.0F, 0.0F, 0.0F));
+        return LayerDefinition.create(mesh, 32, 32);
+    }
+
 }
