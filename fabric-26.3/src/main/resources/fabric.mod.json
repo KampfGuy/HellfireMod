@@ -1,0 +1,21 @@
+
+{
+  "schemaVersion": 1,
+  "id": "hellfire",
+  "version": "${version}",
+  "name": "Hellfire",
+  "description": "Fictional military gear for Minecraft. Uses the game's own explosions, particles, and sounds. Original models.",
+  "authors": ["Kampf Kaiser"],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["com.kampfkaiser.hellfire.HellfireMod"],
+    "client": ["com.kampfkaiser.hellfire.client.HellfireClient"]
+  },
+  "depends": {
+    "fabricloader": ">=0.19.5",
+    "minecraft": "~26.3",
+    "java": ">=25",
+    "fabric-api": "*"
+  }
+}
