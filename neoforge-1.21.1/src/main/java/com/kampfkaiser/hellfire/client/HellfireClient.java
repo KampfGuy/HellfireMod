@@ -3,6 +3,7 @@ package com.kampfkaiser.hellfire.client;
 
 import com.kampfkaiser.hellfire.HellfireMod;
 import com.kampfkaiser.hellfire.registry.ModEntities;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import com.kampfkaiser.hellfire.registry.ModItems;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
@@ -27,19 +28,20 @@ public class HellfireClient {
         event.registerLayerDefinition(ModModelLayers.MISSILE, MissileModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.CHARGE, ChargeModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.FLARE, FlareModel::createBodyLayer);
-        event.registerLayerDefinition(ModModelLayers.SPRITE, SpriteModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.LAUNCHER, LauncherModel::createBodyLayer);
     }
 
     private void renderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(ModEntities.PLANE.get(), ctx -> new OrdnanceRenderer<>(ctx, ModModelLayers.PLANE, PlaneModel::new, ModModelLayers.tex("textures/entity/plane.png"), 1.65F));
+        event.registerEntityRenderer(ModEntities.PLANE.get(), ctx -> new OrdnanceRenderer<>(ctx, ModModelLayers.PLANE, PlaneModel::new, ModModelLayers.tex("textures/entity/plane.png"), 4.0F));
         event.registerEntityRenderer(ModEntities.BOMB.get(), ctx -> new OrdnanceRenderer<>(ctx, ModModelLayers.BOMB, BombModel::new, ModModelLayers.tex("textures/entity/bomb.png"), 1.15F));
         event.registerEntityRenderer(ModEntities.MISSILE.get(), ctx -> new OrdnanceRenderer<>(ctx, ModModelLayers.MISSILE, MissileModel::new, ModModelLayers.tex("textures/entity/missile.png"), 1.25F));
         event.registerEntityRenderer(ModEntities.CHARGE.get(), ctx -> new OrdnanceRenderer<>(ctx, ModModelLayers.CHARGE, ChargeModel::new, ModModelLayers.tex("textures/entity/charge.png"), 1.2F));
         event.registerEntityRenderer(ModEntities.FLARE.get(), ctx -> new OrdnanceRenderer<>(ctx, ModModelLayers.FLARE, FlareModel::new, ModModelLayers.tex("textures/entity/flare.png"), 1.35F));
         event.registerEntityRenderer(ModEntities.CLOUD.get(), ctx -> new CloudRenderer(ctx));
-        event.registerEntityRenderer(ModEntities.PILOT.get(), ctx -> new OrdnanceRenderer<>(ctx, ModModelLayers.PLANE, PlaneModel::new, ModModelLayers.tex("textures/entity/plane.png"), 1.65F));
-        event.registerEntityRenderer(ModEntities.THROWN.get(), ThrownFlareRenderer::new);
+        event.registerEntityRenderer(ModEntities.THROWN.get(), ctx -> new ThrownItemRenderer<>(ctx, 1.5F, false));
         event.registerEntityRenderer(ModEntities.NAPALM.get(), ctx -> new CloudRenderer(ctx));
         event.registerEntityRenderer(ModEntities.RADIATION.get(), ctx -> new CloudRenderer(ctx));
+        event.registerEntityRenderer(ModEntities.PLATFORM.get(), ctx -> new OrdnanceRenderer<>(ctx, ModModelLayers.LAUNCHER, LauncherModel::new, ModModelLayers.tex("textures/entity/launcher.png"), 1.35F));
+        event.registerEntityRenderer(ModEntities.SHOT.get(), ctx -> new CloudRenderer(ctx));
     }
 }

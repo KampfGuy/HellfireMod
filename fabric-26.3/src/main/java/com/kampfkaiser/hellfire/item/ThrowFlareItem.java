@@ -44,7 +44,7 @@ public class ThrowFlareItem extends Item {
         if (!(user instanceof Player player)) return false;
         float power = Math.min(1.0F, (72000 - remaining) / 20.0F);
         if (power < 0.12F) return false;
-        if (!level.isClientSide()) ThrownFlareEntity.spawn(level, player, this.kind, power);
+        if (!level.isClientSide()) ThrownFlareEntity.spawn(level, player, stack, this.kind, power);
         Env.cooldown(player, stack.getItem(), this.cooldown);
         return true;
     }

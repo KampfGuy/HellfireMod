@@ -49,8 +49,8 @@ public class StrikePlaneEntity extends DurableEntity {
         plane.dz = dir.z;
         plane.mode = mode;
         plane.speed = mode == NUKE ? 0.58 : 1.35;
-        plane.dropsLeft = mode == NUKE ? 1 : mode == NAPALM ? 7 : 5;
-        plane.spacing = mode == NUKE ? 1.0 : mode == NAPALM ? 4.5 : 7.0;
+        plane.dropsLeft = mode == NUKE ? 1 : 5;
+        plane.spacing = mode == NUKE ? 1.0 : 7.0;
         plane.nextDrop = mode == NUKE ? 0.0 : -plane.spacing * (plane.dropsLeft / 2.0);
         plane.ready = true;
         plane.snapYaw((float) (Math.atan2(dir.z, dir.x) * (180.0 / Math.PI)) - 90.0F);
@@ -72,9 +72,11 @@ public class StrikePlaneEntity extends DurableEntity {
         while (this.dropsLeft > 0 && along >= this.nextDrop) {
             Vec3 drop = position().add(0.0, -1.4, 0.0);
             Vec3 velocity = dir.scale(0.22).add(0.0, -0.12, 0.0);
-            if (this.mode == NAPALM) NapalmFieldEntity.spawn(world(), drop, 600);
-            else if (this.mode == NUKE) BombEntity.spawnNuclear(world(), drop, velocity);
-            else BombEntity.spawn(world(), drop, velocity);
+            if (this.mode == NUKE) BombEntity.spawnNuclear(world(), drop, velocity);
+            else {
+                BombEntity.spawn(world(), drop, velocity);
+                if (this.mode == NAPALM) NapalmFieldEntity.spawn(world(), drop, 600);
+            }
             this.dropsLeft--;
             this.nextDrop += this.spacing;
         }

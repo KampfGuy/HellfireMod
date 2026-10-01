@@ -17,13 +17,13 @@ public final class ModTabs {
         ResourceKey<CreativeModeTab> key = ResourceKey.create(Registries.CREATIVE_MODE_TAB, HellfireMod.id("hellfire"));
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, key, FabricCreativeModeTab.builder()
                 .title(Component.translatable("itemGroup.hellfire"))
-                .icon(() -> new ItemStack(ModItems.RADIO))
+                .icon(() -> new ItemStack(ModItems.MISSILE_STRIKE))
                 .displayItems((params, output) -> {
-                    output.accept(ModItems.RADIO);
-                    output.accept(ModItems.MISSILE_STRIKE);
+                                        output.accept(ModItems.MISSILE_STRIKE);
                     output.accept(ModItems.NUCLEAR_STRIKE);
                     output.accept(ModItems.NAPALM_STRIKE);
                     output.accept(ModItems.BOMBING_RUN);
+                    output.accept(ModItems.AA_PLATFORM);
                 })
                 .build());
     }

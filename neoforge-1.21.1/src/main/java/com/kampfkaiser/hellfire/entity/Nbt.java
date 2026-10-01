@@ -11,4 +11,7 @@ public final class Nbt {
     public static int getInt(CompoundTag tag, String key, int def) { return tag.contains(key) ? tag.getInt(key) : def; }
     public static double getDouble(CompoundTag tag, String key, double def) { return tag.contains(key) ? tag.getDouble(key) : def; }
     public static boolean getBool(CompoundTag tag, String key, boolean def) { return tag.contains(key) ? tag.getBoolean(key) : def; }
+    public static void putLong(CompoundTag tag, String key, long value) { tag.putLong(key, value); }
+    public static long getLong(CompoundTag tag, String key, long def) { return tag.contains(key) ? tag.getLong(key) : def; }
 }
+

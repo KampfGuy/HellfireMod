@@ -1,6 +1,8 @@
 package com.kampfkaiser.hellfire.entity;
 
 import com.kampfkaiser.hellfire.registry.ModEntities;
+import com.kampfkaiser.hellfire.registry.ModItems;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -13,8 +15,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 /** A thrown flare. It uses the item sprite and calls a strike when it lands. */
-public class ThrownFlareEntity extends TrackedEntity {
+public class ThrownFlareEntity extends TrackedEntity implements net.minecraft.world.entity.projectile.ItemSupplier {
     private static final EntityDataAccessor<Integer> KIND = SynchedEntityData.defineId(ThrownFlareEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<ItemStack> STACK = SynchedEntityData.defineId(ThrownFlareEntity.class, EntityDataSerializers.ITEM_STACK);
 
     private int age;
     private double aimX = 1;
@@ -24,7 +27,7 @@ public class ThrownFlareEntity extends TrackedEntity {
         super(type, level);
     }
 
-    public static void spawn(Level level, Player player, int kind, float power) {
+    public static void spawn(Level level, Player player, ItemStack stack, int kind, float power) {
         if (Env.client(level)) return;
         Vec3 look = player.getLookAngle();
         ThrownFlareEntity flare = new ThrownFlareEntity(ModEntities.thrownType(), level);
@@ -33,7 +36,10 @@ public class ThrownFlareEntity extends TrackedEntity {
         flare.setDeltaMovement(look.scale(0.45 + power * 1.45).add(0.0, 0.12, 0.0));
         flare.aimX = look.x;
         flare.aimZ = look.z;
+        ItemStack carried = stack == null || stack.isEmpty() ? ModItems.flareStack(kind) : stack.copy();
+        carried.setCount(1);
         flare.getEntityData().set(KIND, kind);
+        flare.getEntityData().set(STACK, carried);
         flare.faceMotion();
         level.addFreshEntity(flare);
     }
@@ -41,8 +47,15 @@ public class ThrownFlareEntity extends TrackedEntity {
     public int kind() { return this.entityData.get(KIND); }
 
     @Override
+    public ItemStack getItem() {
+        ItemStack carried = this.entityData.get(STACK);
+        return carried.isEmpty() ? ModItems.flareStack(kind()) : carried;
+    }
+
+    @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         builder.define(KIND, Strikes.MISSILE);
+        builder.define(STACK, ItemStack.EMPTY);
     }
 
     @Override
@@ -71,7 +84,9 @@ public class ThrownFlareEntity extends TrackedEntity {
         this.age = Nbt.getInt(tag, "Age", 0);
         this.aimX = Nbt.getDouble(tag, "AimX", 1);
         this.aimZ = Nbt.getDouble(tag, "AimZ", 0);
-        this.entityData.set(KIND, Nbt.getInt(tag, "Kind", Strikes.MISSILE));
+        int saved = Nbt.getInt(tag, "Kind", Strikes.MISSILE);
+        this.entityData.set(KIND, saved);
+        this.entityData.set(STACK, ModItems.flareStack(saved));
     }
 
     @Override

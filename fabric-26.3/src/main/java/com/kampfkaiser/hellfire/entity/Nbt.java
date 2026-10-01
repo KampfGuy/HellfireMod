@@ -12,4 +12,7 @@ public final class Nbt {
     public static int getInt(ValueInput tag, String key, int def) { return tag.getIntOr(key, def); }
     public static double getDouble(ValueInput tag, String key, double def) { return tag.getDoubleOr(key, def); }
     public static boolean getBool(ValueInput tag, String key, boolean def) { return tag.getBooleanOr(key, def); }
+    public static void putLong(ValueOutput tag, String key, long value) { tag.putLong(key, value); }
+    public static long getLong(ValueInput tag, String key, long def) { return tag.getLongOr(key, def); }
 }
+

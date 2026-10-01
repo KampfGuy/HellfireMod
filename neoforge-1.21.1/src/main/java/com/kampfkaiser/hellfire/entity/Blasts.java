@@ -68,37 +68,12 @@ public final class Blasts {
         }
     }
 
-    private static boolean terrain(BlockState state, Level level, BlockPos pos) {
+private static boolean terrain(BlockState state, Level level, BlockPos pos) {
         if (state.isAir() || state.is(Blocks.BEDROCK)) return false;
+        if (state.is(Blocks.WATER) || state.is(Blocks.LAVA) || state.is(Blocks.BUBBLE_COLUMN)) return false;
+        // Unbreakable blocks (bedrock, barrier, end portal, command blocks) have a negative destroy speed.
         if (state.getDestroySpeed(level, pos) < 0.0F) return false;
-        return state.is(BlockTags.DIRT)
-                || state.is(BlockTags.SAND)
-                || state.is(BlockTags.BASE_STONE_OVERWORLD)
-                || state.is(BlockTags.BASE_STONE_NETHER)
-                || state.is(BlockTags.STONE_ORE_REPLACEABLES)
-                || state.is(BlockTags.DEEPSLATE_ORE_REPLACEABLES)
-                || state.is(Blocks.GRAVEL)
-                || state.is(Blocks.CLAY)
-                || state.is(Blocks.MUD)
-                || state.is(Blocks.SANDSTONE)
-                || state.is(Blocks.RED_SANDSTONE)
-                || state.is(Blocks.TUFF)
-                || state.is(Blocks.CALCITE)
-                || state.is(Blocks.NETHERRACK)
-                || state.is(Blocks.END_STONE)
-                || state.is(Blocks.BLACKSTONE)
-                || state.is(Blocks.COBBLESTONE)
-                || state.is(Blocks.MOSSY_COBBLESTONE)
-                || state.is(Blocks.COBBLED_DEEPSLATE)
-                || state.is(Blocks.DEEPSLATE)
-                || state.is(Blocks.SNOW)
-                || state.is(Blocks.SNOW_BLOCK)
-                || state.is(Blocks.STONE)
-                || state.is(Blocks.DIRT)
-                || state.is(Blocks.GRASS_BLOCK)
-                || state.is(Blocks.ANDESITE)
-                || state.is(Blocks.DIORITE)
-                || state.is(Blocks.GRANITE);
+        return true;
     }
 
     private static void shock(ServerLevel level, Vec3 pos, int radius) {
